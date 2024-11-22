@@ -1,7 +1,7 @@
 from typing import List
 from random import choice
 
-from Clases import Detector, Mutador, Radiacion, Virus, Sanador
+from Clases import Detector, Radiacion, Virus, Sanador
 
 def crear_matriz() -> List[str]:
     print("Ingrese su matriz de ADN fila por fila. Deben ser 6 filas de exactamente 6 caracteres con bases nitrogenadas válidas (A, T, C, G).")
@@ -15,9 +15,7 @@ def crear_matriz() -> List[str]:
             else:
                 print("Error: La fila debe tener exactamente 6 letras y solo puede contener A, T, C o G.")
     return matriz
-"""Resumiendo, el menú lo que hace es que te deja elegir entre crear una matriz o usar una predefinida, si querés hacerla manual te va a pedir q
-la ingreses fila por fila, se ingresa todo junto, por ejemplo, en la primer fila se ingresa AATTGG y así con las otras PD: me sale como que el 
-mutador a la hora de importarlo no hace nada pero dentro de lo que es el codigo funciona igual, esta raro"""
+
 def main():
     print("\n---Bienvenido al simulador de ADN---")
     print("1. Crear matriz personalizada")
