@@ -56,6 +56,10 @@ def main():
             print("1. Usar Radiación (horizontal o vertical)")
             print("2. Usar Virus (diagonal)")
             mutacion = input("Seleccione un tipo de mutación (1/2): ").strip()
+            base = input("Ingrese la base nitrogenada para la mutación (A/T/C/G): ").strip().upper()
+            if base not in ["A", "T", "C", "G"]:
+                    print("Base nitrogenada inválida. Intente de nuevo.")
+                    continue
 
             if mutacion == "1":
                 orientacion = input("Ingrese orientación (H para horizontal, V para vertical): ").strip().upper()
@@ -66,7 +70,7 @@ def main():
                     posicion = int(input("Ingrese la posición inicial (0-5): "))
                     if not 0 <= posicion <= 5:
                         raise ValueError
-                    radiacion = Radiacion("T", 5)
+                    radiacion = Radiacion(base, 5)
                     matriz = radiacion.crear_mutante(matriz, posicion, orientacion)
                     print("Mutación aplicada con éxito.")
                 except ValueError:
@@ -76,7 +80,7 @@ def main():
                     posicion = int(input("Ingrese la posición inicial (0-2 para permitir espacio diagonal): "))
                     if not 0 <= posicion <= 2:
                         raise ValueError
-                    virus = Virus("T", 5)
+                    virus = Virus(base, 5)
                     matriz = virus.crear_mutante(matriz, posicion)
                     print("Mutación aplicada con éxito.")
                 except ValueError:
