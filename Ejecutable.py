@@ -19,26 +19,35 @@ def crear_matriz() -> List[str]:
 la ingreses fila por fila, se ingresa todo junto, por ejemplo, en la primer fila se ingresa AATTGG y así con las otras PD: me sale como que el 
 mutador a la hora de importarlo no hace nada pero dentro de lo que es el codigo funciona igual, esta raro"""
 def main():
-    print("---Bienvenido al simulador de ADN---")
+    print("\n---Bienvenido al simulador de ADN---")
     print("1. Crear matriz personalizada")
     print("2. Usar matriz predefinida")
+    print("")
     opcion = input("Seleccione una opción (1/2): ").strip()
 
     if opcion == "1":
         matriz = crear_matriz()
     elif opcion == "2":
         matriz = [
-            "AGATCA", "GATTCA", "CAACAT",
-            "GAGCTA", "ATTGCG", "CTGTTC"
+            "AATACA", "GATTCA", "CAACAT",
+            "GGGCTA", "ATTGCG", "CTGTTC"
         ]
     else:
-        print("Opción inválida. Finalizando programa.")
+        print("")
+        print("### Opción inválida. Finalizando programa. ###")
         return
+    
+    
 
     while True:
         print("\nMatriz actual:")
+        print("----------ADN----------")
+        contador=0
+        print("  0   1   2   3   4   5")
         for fila in matriz:
-            print(fila)
+            print(contador, " | ".join(fila))  
+            contador+=1 
+        print("-----------------------")
 
         print("\n¿Qué desea hacer?")
         print("1. Detectar mutantes")
@@ -48,54 +57,80 @@ def main():
         opcion = input("Ingrese una opción (1/2/3/4): ").strip()
 
         if opcion == "1":
-            detector = Detector("Detector General", 0.8)
-            es_mutante = detector.detectar_mutantes(matriz)
-            print("Se detectó un mutante." if es_mutante else "No se detectaron mutantes.")
+            detector = Detector(matriz)
+            detector.detectar_mutantes()
+            if detector.mutacion == False:
+                print("\nNo hay mutaciones")
+            else:
+                print("\nHay una mutación")
+            
         elif opcion == "2":
             print("\nOpciones de mutación:")
             print("1. Usar Radiación (horizontal o vertical)")
-            print("2. Usar Virus (diagonal)")
+            print("2. Usar Virus (diagonal)\n")
             mutacion = input("Seleccione un tipo de mutación (1/2): ").strip()
+            if mutacion not in ["1","2"]:
+                    print("\n###() Opción inválida. Intente de nuevo. ()###")
+                    continue
+            print("")
             base = input("Ingrese la base nitrogenada para la mutación (A/T/C/G): ").strip().upper()
+            print("")
             if base not in ["A", "T", "C", "G"]:
-                    print("Base nitrogenada inválida. Intente de nuevo.")
+                    print("###() Base nitrogenada inválida. Intente de nuevo. ()###")
                     continue
 
+
             if mutacion == "1":
+
                 orientacion = input("Ingrese orientación (H para horizontal, V para vertical): ").strip().upper()
                 if orientacion not in ["H", "V"]:
-                    print("Orientación inválida. Intente de nuevo.")
+                    print("###() Orientación inválida. Intente de nuevo. ()###")
                     continue
                 try:
-                    posicion = int(input("Ingrese la posición inicial (0-5): "))
-                    if not 0 <= posicion <= 5:
-                        raise ValueError
-                    radiacion = Radiacion(base, 5)
-                    matriz = radiacion.crear_mutante(matriz, posicion, orientacion)
-                    print("Mutación aplicada con éxito.")
+                    posicion_inicial = input("\nIngrese una posicion x,y (fila, columna -- sin parentesis -- ejemplo: 0,3): ")
+                    print("")
+                    
+                    posicion_inicial = map(int, posicion_inicial.split(","))
+                    
+                    radiacion = Radiacion(base,matriz)
+                    
+                    matriz = radiacion.crear_mutante(base, posicion_inicial, orientacion)
+
+                    if radiacion.estado_mutacion == "Exitosa":
+                        print("Mutación aplicada con éxito!!!")
+                    
                 except ValueError:
-                    print("Posición inválida. Debe ser un número entre 0 y 5.")
+                    print("###() Posición inválida. no olvide la coma, ejemplo: 3,2 ()###" )
+                    
             elif mutacion == "2":
+
                 try:
-                    posicion = int(input("Ingrese la posición inicial (0-2 para permitir espacio diagonal): "))
-                    if not 0 <= posicion <= 2:
-                        raise ValueError
-                    virus = Virus(base, 5)
-                    matriz = virus.crear_mutante(matriz, posicion)
-                    print("Mutación aplicada con éxito.")
+                    posicion_inicial = input("\nIngrese una posicion x,y (fila, columna -- sin parentesis -- ejemplo: 0,3): ")
+                    print("")
+
+                    posicion_inicial = map(int, posicion_inicial.split(","))
+                    
+                    virus = Virus(base, matriz)
+
+                    matriz = virus.crear_mutante(base, posicion_inicial)
+
+                    if virus.estado_mutacion == "Exitosa":
+                        print("Mutación aplicada con éxito!!!")
+
                 except ValueError:
-                    print("Posición inválida. Debe ser un número entre 0 y 2.")
+                    print("###() Posición inválida. no olvide la coma, ejemplo: 3,2 ()###" )
             else:
-                print("Tipo de mutación inválido. Intente de nuevo.")
+                print("###() Tipo de mutación inválido. Intente de nuevo. ()###")
+
         elif opcion == "3":
-            sanador = Sanador("Sanador Maestro")
-            matriz = sanador.sanar_mutantes(matriz)
-            print("Se ha sanado la matriz.")
+            sanador=Sanador(matriz)
+            matriz=sanador.sanar_mutantes()
+            
         elif opcion == "4":
             print("¡Gracias por usar el simulador de ADN! Hasta pronto.")
             break
         else:
-            print("Opción inválida. Intente de nuevo.")
+            print("###() Opción inválida. Intente de nuevo. ()###")
 
 if __name__ == "__main__":
     main()
