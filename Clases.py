@@ -151,12 +151,12 @@ class Radiacion(Mutador):
                     
                     for i in range(4):
                         self.matriz_adn[fila][(columna-3) + i] = base_nitrogenada
-
+                    
                 else:    
                     
                     for i in range(4):
                         self.matriz_adn[fila][columna + i] = base_nitrogenada
-
+                    
 
                 '''
                     de igual manera con las horizontales, solamente que se tomara en cuenta la fila y no la columna
@@ -166,14 +166,14 @@ class Radiacion(Mutador):
 
             elif orientacion == "V":
                 if fila + 3 >= len(self.matriz_adn):
-                    
                     for i in range(4):
                         self.matriz_adn[(fila-3) + i][columna] = base_nitrogenada
-
+                    
                 else:            
                     for i in range(4):
-                        
                         self.matriz_adn[fila + i][columna] = base_nitrogenada
+
+            self.estado_mutacion = "Exitosa"
         
         except IndexError as e:
             print(f"*****************\nESTADO DE LA MUTACIÓN: {self.estado_mutacion} \n*****************")
@@ -185,7 +185,7 @@ class Radiacion(Mutador):
         '''
         
         self.matriz_adn = [''.join(fila) for fila in self.matriz_adn]
-        self.estado_mutacion = "Exitosa"
+        
         return self.matriz_adn
     
 '''**************************************************************************************************************************'''
@@ -231,12 +231,12 @@ class Virus(Mutador):
 
                 for i in range(4):
                     self.matriz_adn[fila + i][columna + i] = base_nitrogenada
-                
+        
+            self.estado_mutacion = "Exitosa"
         except IndexError as e:
             print(f"*****************\nESTADO DE LA MUTACIÓN: {self.estado_mutacion} \n*****************")
             print(f"Error de índice: {e} \n*****************")
 
-        self.estado_mutacion = "Exitosa"
         
         '''
         transformamos la matriz de caracteres individuales, a la matriz de cadenas original, la cual cambiamos en la superclase
